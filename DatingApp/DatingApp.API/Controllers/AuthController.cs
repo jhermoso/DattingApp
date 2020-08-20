@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using DatingApp.API.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices.WindowsRuntime;
+using DatingApp.API.Models;
+using DatingApp.API.Dtos;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+
+namespace DatingApp.API.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly IAuthRepository _repo;
+        private readonly IConfiguration _config;
+
+        public AuthController(IAuthRepository repo, IConfiguration config)
+        {
+            this._repo = repo;
+            this._config = config;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            // preconditions
+            if (userForRegisterDto is null || userForRegisterDto.UserName is null || userForRegisterDto.Password is null) { return BadRequest("User name or password are empty"); }
+
+            userForRegisterDto.UserName = userForRegisterDto.UserName.ToLower();
+            if (await _repo.UserExists(userForRegisterDto.UserName))
+            {
+                return BadRequest("User Name already exists");
+            }
+
+            var userToCreate = new User
+            {
+                UserName = userForRegisterDto.UserName
+            };
+
+            var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
+
+            return StatusCode(201); //CreatedAtRoute()
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
+        {
+            var userFromRepo = await _repo.Login(userForLoginDto.UserName.ToLower(), userForLoginDto.Password);
+
+            if (userFromRepo is null)
+                return Unauthorized(); // no se proporciona mas información para evitar ataques de fuerza bruta
+
+
+            // creamos parte de la carga util de nuestro token de seguridad
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
+                new Claim(ClaimTypes.Name, userFromRepo.UserName)
+            };
+
+            // con esto estamos firmando nuestro token
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value)); // obtenemos nuestra firma codificada
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature); // obtenemos las credenciales con la firma anterior
+
+            // con la cabecera y el payload ya podemos crear el token
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity (claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            // ahora podemos crear la version JWT del token para poder transmitirlo dentro de un json
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return Ok(new
+            {
+                token = tokenHandler.WriteToken(token)
+            });
+        }
+
+    }
+}
