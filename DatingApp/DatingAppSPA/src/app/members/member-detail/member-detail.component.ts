@@ -11,19 +11,28 @@ import { User } from 'src/app/_models/user';
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
-  constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
+  
+  constructor(
+    private userService: UserService,
+    private alertify: AlertifyService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loadUser();
+    // this.loadUser();
+    this.route.data.subscribe(data => {
+      this.user = data['user'];
+    });
   }
 
   // members/4
-  loadUser(): void{
+  /*
+     loadUser(): void{
     // get user devuelve un obserbable por esa razón nos debemos suscribir
     this.userService.getUser(+this.route.snapshot.params['id']).subscribe((user: User) => {
       this.user = user;
       }, error => {
         this.alertify.error(error);
       });
-  }
+    }
+  */
 }
