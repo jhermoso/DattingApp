@@ -11,7 +11,7 @@ import { User } from 'src/app/_models/user';
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
-  
+
   constructor(
     private userService: UserService,
     private alertify: AlertifyService,
@@ -20,7 +20,7 @@ export class MemberDetailComponent implements OnInit {
   ngOnInit(): void {
     // this.loadUser();
     this.route.data.subscribe(data => {
-      this.user = data['user'];
+      this.user = data.user;
     });
   }
 
