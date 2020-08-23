@@ -338,3 +338,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+DatingApp/DatingApp.API/obj/Debug/netcoreapp3.1/DatingApp.API.csprojAssemblyReference.cache

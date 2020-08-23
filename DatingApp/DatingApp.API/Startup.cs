@@ -12,7 +12,8 @@ using System.Text;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-
+using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace DatingApp.API
 {
@@ -30,12 +31,21 @@ namespace DatingApp.API
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
             if (connectionString == null)
-                connectionString = "Data Source= datingapp.db";
+                connectionString = "Data Source=datingapp.db";
 
             services.AddDbContext<DataContext>(x => x.UseSqlite(connectionString));
-            services.AddControllers();
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1) // esto es para version 3.0
+            //    .AddJsonOptions(opt =>
+            //    {
+            //        opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //    });
+
+            services.AddControllers().AddNewtonsoftJson(); // esta linea ha necesitado instalar previamente Microsoft.AspNetCore.Mvc.NewtonsoftJson el cual a desinstalado cierta cantidad de paquetes. 
             services.AddCors();
+            services.AddAutoMapper(typeof(DatingRepository).Assembly); // automapper necesita que le indiquemos de que o para que ensamblado vamos a obtener el automapper
+            services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
