@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { AuthGuard } from './_guards/auth.guard';
 
 import { AppComponent } from './app.component';
 // import { ValueComponent } from './value/value.component';
@@ -69,7 +71,9 @@ export function tokenGetter(): string | null {
     ErrorInterceptorProvider,
     MemberDetailResolver,
     MemberListResolver,
-    MemberEditResolver
+    MemberEditResolver,
+    PreventUnsavedChanges,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
