@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'src/app/_models/user';
 import { AlertifyService } from 'src/app/_services/alertify.service';
@@ -14,8 +14,15 @@ import { AuthService } from 'src/app/_services/auth.service';
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm', { static: true }) // decorador para acceder al estado del formulario. Necesita el import de @angular/core.
   editForm: NgForm;         // variable de tipo NgForm que nos permite acceder al formulario. Necesita el import de @angular/forms.
-
   user: User;
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void{
+    if (this.editForm.dirty){
+      $event.returnValue = true;
+    }
+  }
+
 
   constructor(
     private route: ActivatedRoute,
