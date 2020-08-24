@@ -20,12 +20,13 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { MemberCardComponent } from './members/member-card/member-card.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
+import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 // import { AlertifyService} from './_services/alertify.service'
 import { appRoutes } from './routes';
-
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
 
 // copied from https://github.com/auth0/angular2-jwt usage injection
 export function tokenGetter(): string | null {
@@ -43,7 +44,8 @@ export function tokenGetter(): string | null {
     ListsComponent,
     MessagesComponent,
     MemberCardComponent,
-    MemberDetailComponent
+    MemberDetailComponent,
+    MemberEditComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ export function tokenGetter(): string | null {
     AuthService,
     ErrorInterceptorProvider,
     MemberDetailResolver,
-    MemberListResolver
+    MemberListResolver,
+    MemberEditResolver
   ],
   bootstrap: [AppComponent]
 })
