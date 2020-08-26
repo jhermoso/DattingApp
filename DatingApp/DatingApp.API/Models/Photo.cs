@@ -11,6 +11,8 @@ namespace DatingApp.API.Models
         public DateTime DateAdded {get; set;}
         public bool IsMain {get; set;}
 
+        // Cloudinary Id 
+        public string PublicId { get; set; }
         // con estas dos propiedades explicitas acerca de la relación entre Photos y 
         // user estamos haciendo que EF establezca la relación con "Cascade delete"
         // esto se debe a que EF no tiene que inferir la existencia de estos dos campos

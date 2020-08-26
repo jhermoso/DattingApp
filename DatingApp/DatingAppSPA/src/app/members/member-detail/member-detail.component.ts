@@ -58,12 +58,12 @@ export class MemberDetailComponent implements OnInit {
       });
     } */
 
-    for (let i = 0; i < this.user.phothos.length; i++) {
+    for (let i = 0; i < this.user.photos.length; i++) {
       imageUrls.push({
-        small: this.user.phothos[i].url,
-        medium: this.user.phothos[i].url,
-        big: this.user.phothos[i].url,
-        description: this.user.phothos[i].description
+        small: this.user.photos[i].url,
+        medium: this.user.photos[i].url,
+        big: this.user.photos[i].url,
+        description: this.user.photos[i].description
       });
     }
 

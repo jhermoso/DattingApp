@@ -42,6 +42,7 @@ namespace DatingApp.API
 
             services.AddControllers().AddNewtonsoftJson(); // esta linea ha necesitado instalar previamente Microsoft.AspNetCore.Mvc.NewtonsoftJson el cual a desinstalado cierta cantidad de paquetes. 
             services.AddCors();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(DatingRepository).Assembly); // automapper necesita que le indiquemos de que o para que ensamblado vamos a obtener el automapper
             services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository, AuthRepository>();

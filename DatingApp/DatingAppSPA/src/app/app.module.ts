@@ -29,6 +29,8 @@ import { MessagesComponent } from './messages/messages.component';
 // import { AlertifyService} from './_services/alertify.service'
 import { appRoutes } from './routes';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { FileUploadModule } from 'ng2-file-upload';
 
 // copied from https://github.com/auth0/angular2-jwt usage injection
 export function tokenGetter(): string | null {
@@ -47,7 +49,8 @@ export function tokenGetter(): string | null {
     MessagesComponent,
     MemberCardComponent,
     MemberDetailComponent,
-    MemberEditComponent
+    MemberEditComponent,
+    PhotoEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ export function tokenGetter(): string | null {
     FormsModule,
     BrowserAnimationsModule,
     NgxGalleryModule,
+    FileUploadModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     RouterModule.forRoot(appRoutes),

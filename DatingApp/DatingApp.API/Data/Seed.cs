@@ -23,7 +23,7 @@ namespace DatingApp.API.Data
                     user.PasswordSalt = passwordSalt;
                     user.UserName = user.UserName.ToLower();
                     user.Created = DateTime.Now;
-                    user.Phothos.First().DateAdded = DateTime.Now;
+                    user.Photos.First().DateAdded = DateTime.Now;
                     context.Users.Add(user);
                 }
 
