@@ -87,15 +87,16 @@ export class PhotoEditorComponent implements OnInit {
           photo.isMain = true;
           // update the main photo with the ouput property
           // el orden es importante.
-          this.getMemberPhotoChange.emit(photo.url);
+          // this.getMemberPhotoChange.emit(photo.url);
+
+          // cambiamos el anterior metodo con una output property 
+          // por el metodo de actualización con beheavieurSubject
           this.authService.changeMemberPhoto(photo.url);
           this.authService.currentUser.photoUrl = photo.url;
 
-
-          localStorage.setItem(
-            'user',
-            JSON.stringify(this.authService.currentUser)
-          );
+          // actualizamos el local storage con el valor de la foto
+          // con objeto de que la actualización de la pagina mantenga el valor de la foto.
+          localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
         },
         error => {
           this.alertify.error(error);

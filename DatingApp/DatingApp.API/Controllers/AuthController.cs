@@ -14,6 +14,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 
 namespace DatingApp.API.Controllers
 {
@@ -23,11 +24,13 @@ namespace DatingApp.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
             this._repo = repo;
             this._config = config;
+            this._mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -86,9 +89,17 @@ namespace DatingApp.API.Controllers
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+
+                // en este punto vamos a devolver la foto del usuario
+                // que almacenaremos en el local storage con objeto de
+                // poder visualizarlo en la barra de navegación
+                // esta foto no se incluye en el token de autenticación si no 
+                // simplemente se añade a la respuesta del login como un objeto adicional 
+                user
             });
         }
 

@@ -15,6 +15,7 @@ export class MemberEditComponent implements OnInit {
   @ViewChild('editForm', { static: true }) // decorador para acceder al estado del formulario. Necesita el import de @angular/core.
   editForm: NgForm;         // variable de tipo NgForm que nos permite acceder al formulario. Necesita el import de @angular/forms.
   user: User;
+  // en este punto volvemos a repetir el proceso de suscripción al behavieurSubject
   photoUrl: string;
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any){
@@ -22,7 +23,6 @@ export class MemberEditComponent implements OnInit {
       $event.returnValue = true;
     }
   }
-
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +35,7 @@ export class MemberEditComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.user = data.user;
     });
-
+    
     this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
   }
 
@@ -60,5 +60,4 @@ export class MemberEditComponent implements OnInit {
   updateMainPhoto(photoUrl) {
     this.user.photoUrl = photoUrl;
   }
-
 }
