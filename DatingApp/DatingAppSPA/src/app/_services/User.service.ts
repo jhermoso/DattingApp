@@ -31,6 +31,7 @@ export class UserService {
     );
   }
 
+  // llamada a la api con el delete
   deletePhoto(userId: number, id: number) {
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
   }

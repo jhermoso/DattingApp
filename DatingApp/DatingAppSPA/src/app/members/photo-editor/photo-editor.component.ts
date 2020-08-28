@@ -109,7 +109,7 @@ export class PhotoEditorComponent implements OnInit {
       this.userService
         .deletePhoto(this.authService.decodedToken.nameid, id)
         .subscribe(
-          () => {
+          () => { // splice elimina un item del array, findindex utiliza un predicado
             this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
             this.alertify.success('Photo has been deleted');
           },

@@ -159,7 +159,7 @@ namespace DatingApp.API.Controllers
             if (photoFromRepo.IsMain)
                 return BadRequest("You cannot delete your main photo");
 
-
+            // delete from cloudinary
             if (photoFromRepo.PublicId != null)
             {
                 var deleteParams = new DeletionParams(photoFromRepo.PublicId);
@@ -167,6 +167,7 @@ namespace DatingApp.API.Controllers
 
                 if (result.Result == "ok")
                 {
+                    // si el borrado de cloudinary es ok borramos la referencia en nuestra base de datos
                     _repo.Delete(photoFromRepo);
                 }
             }
