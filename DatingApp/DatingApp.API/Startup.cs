@@ -26,7 +26,7 @@ namespace DatingApp.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // This method gets called by the runtime. Use this method to add services to the IoC container.
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -59,6 +59,10 @@ namespace DatingApp.API
                         ValidateAudience = false
                     };
                 });
+            // usamos un addscoped por que queremos instaciarlo cada solicitud del usuario
+            // el LogUSerActivity es un ejemplo de action filter
+            // para usar este servicio en un controlador solo lo añadimos como atributo de la clase ejemplo: UsersController
+            services.AddScoped<LogUserActivity>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
