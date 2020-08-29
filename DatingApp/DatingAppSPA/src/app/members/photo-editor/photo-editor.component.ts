@@ -58,6 +58,7 @@ export class PhotoEditorComponent implements OnInit {
     };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
+
       if (response) {
         const res: Photo = JSON.parse(response);
         const photo = {
@@ -68,7 +69,12 @@ export class PhotoEditorComponent implements OnInit {
           isMain: res.isMain
         };
         this.photos.push(photo);
+
+      // si el usuario no tiene ninguna foto el metodo de addPhot del PhotossController
+      // hace que sea la foto principal.
         if (photo.isMain) {
+          // estas lineas estan copiadas del metodo setMainPhoto
+          // que son las que actualizan el local storage con la foto principal
           this.authService.changeMemberPhoto(photo.url);
           this.authService.currentUser.photoUrl = photo.url;
           localStorage.setItem('user', JSON.stringify(this.authService.currentUser));

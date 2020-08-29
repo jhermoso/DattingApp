@@ -87,6 +87,7 @@ namespace DatingApp.API.Controllers
 
             var photo = _mapper.Map<Photo>(photoForCreationDto);
 
+            // si el usuario no tiene ninguna foto se convierte en la principal
             if (!userFromRepo.Photos.Any(u => u.IsMain))
                 photo.IsMain = true;
 
