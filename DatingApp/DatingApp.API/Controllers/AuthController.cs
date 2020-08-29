@@ -47,14 +47,29 @@ namespace DatingApp.API.Controllers
                 return BadRequest("User Name already exists");
             }
 
-            var userToCreate = new User
-            {
-                UserName = userForRegisterDto.UserName
-            };
+            var userToCreate = _mapper.Map<User>(userForRegisterDto); //new User
+            //{
+            //    UserName = userForRegisterDto.UserName
+            //};
 
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
 
-            return StatusCode(201); //CreatedAtRoute()
+            // este campo lo usamos solo para devolver el usuario que acabamos de registrar.
+            // pero el createdUser contiene el paswword asi que para evitar el devolver el usuario
+            // con información de paswword creamos un nuevo usuario desde un mapping eliminando
+            // la inforamcion de password
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+
+            // why to use createdatroute https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201
+            // en este caso devolvemos la ruta del controlador Users el metodo get cuyo nombre es "GetUser"
+            // con el parametro id y el propio objeto a devolver.
+            // esta es una condición de las api que siguen las directrices de restfull.
+            // que es devolver la ruta en la que se puede comprobar el objeto recien creado.
+            // aqui podemos ver un ejemplo de por que json no pone el nombre del componente raiz
+            // y es para permitir el uso de metodos anonimos o la contrucción de objetos anonimos 
+            // como el que hace el new de la sentencia.
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id }, userToReturn);
+            //return StatusCode(201); //CreatedAtRoute()
         }
 
         [HttpPost("login")]

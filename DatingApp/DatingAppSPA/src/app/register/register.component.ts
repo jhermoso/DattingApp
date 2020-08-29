@@ -69,6 +69,9 @@ export class RegisterComponent implements OnInit {
 
   register() {
     if (this.registerForm.valid) {
+      // Object.assign realiza una copia de las propiedades de varios objetos source a un unico objeto
+      // en este caso el objeto sobre el que copia es un objeto vacio {}  en el primer parametro
+      // que se asigna a this.user
       this.user = Object.assign({}, this.registerForm.value);
       this.authService.register(this.user).subscribe(
         () => {
@@ -77,7 +80,14 @@ export class RegisterComponent implements OnInit {
         error => {
           this.alertify.error(error);
         },
+        // este tercer parametro corresponde al oncomplete
         () => {
+          // hacemos un login inmediato
+          // el metodo login nos devuelve un observable
+          // al suscribirnos a este observable podemos indicar 
+          // que es lo que queremos hacer a continuación 
+          // es decir cual es nuestro "next" step que aqui va a ser
+          // navegar a la sección de members
           this.authService.login(this.user).subscribe(() => {
             this.router.navigate(['/members']);
           });

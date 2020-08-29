@@ -45,11 +45,13 @@ export class AuthService {
       );
   }
 
-  register(model: any) {
+  register(user: User) {
     // el metodo post devuelve un observable
     // por esta razón es necesario que el metodo
     // de registro se suscriba a esta devolución.
-    return this.http.post(this.baseUrl + 'register', model);
+    //  igualmente dado que es un post y tenemos que usar createdatroute
+    // debemos hacer que devuelva el tipo que hemos creado
+    return this.http.post(this.baseUrl + 'register', user);
   }
 
   loggedIn() {
