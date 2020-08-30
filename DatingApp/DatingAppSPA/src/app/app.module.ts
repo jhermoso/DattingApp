@@ -32,7 +32,10 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
+
 
 // copied from https://github.com/auth0/angular2-jwt usage injection
 export function tokenGetter(): string | null {
@@ -63,6 +66,8 @@ export function tokenGetter(): string | null {
     BrowserAnimationsModule,
     NgxGalleryModule,
     FileUploadModule,
+    PaginationModule.forRoot(),
+    ButtonsModule.forRoot(),
     TimeagoModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),

@@ -12,6 +12,8 @@ namespace DatingApp.API.Helpers
         }
 
         public int UserId { get; set; }
+
+        // aqui tenemos algunos de los parametros por los que se pueden filtrar los usuarios
         public string Gender { get; set; }
         public int MinAge { get; set; } = 18;
         public int MaxAge { get; set; } = 99;

@@ -48,8 +48,31 @@ namespace DatingApp.API.Data
         // public async Task<IEnumerable<User>> GetUsers()
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users = /*await*/ _context.Users.Include(p => p.Photos)/*.ToListAsync()*/;
+            var users = /*await*/ _context.Users.Include(p => p.Photos)
+            .OrderByDescending(c =>c.LastActive).AsQueryable()/*.ToListAsync()*/;
             // return users;
+            users = users.Where(u => u.Id != userParams.UserId );
+            users = users.Where(u => u.Gender == userParams.Gender);
+
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
+            {
+                var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1 );
+                var maxDob = DateTime.Today.AddYears(-userParams.MinAge -1);
+                users = users.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+            }
+
+            if (!string.IsNullOrEmpty(userParams.OrderBy))
+            {
+                switch (userParams.OrderBy)
+                {
+                    case "created":
+                        users = users.OrderByDescending( u => u.Created);
+                        break;
+                    default:
+                        users = users.OrderByDescending( u => u.LastActive);
+                    break;
+                }
+            }
 
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
