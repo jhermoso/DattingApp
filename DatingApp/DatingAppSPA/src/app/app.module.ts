@@ -35,7 +35,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
-
+import { ListsResolver } from './_resolvers/lists.resolver';
 
 // copied from https://github.com/auth0/angular2-jwt usage injection
 export function tokenGetter(): string | null {
@@ -88,7 +88,8 @@ export function tokenGetter(): string | null {
     MemberListResolver,
     MemberEditResolver,
     PreventUnsavedChanges,
-    AuthGuard
+    AuthGuard,
+    ListsResolver
   ],
   bootstrap: [AppComponent]
 })
