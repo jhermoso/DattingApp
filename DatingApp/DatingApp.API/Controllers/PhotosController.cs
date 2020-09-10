@@ -100,11 +100,11 @@ namespace DatingApp.API.Controllers
                 // tiene ya asignado un Id y por tanto podemos usarlo en la respuesta que creamos a continuación.
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
 
-                // dado que este es un metodo a usar con un post debemos devolver CreatedAtRoute
+                // dado que este es un metodo a usar con un post debemos devolver CreatedAtRoute (para cumplir la especificacion rest full)
                 // este metodo nos permite devolver un recurso 
-                // en ste caso devolvemos la referencia al recurso creado en Cloudinary
-                // el primer parametro es el nombre de un metodo de nuestro propio controlador
-                // es decir es el route name con el que el nuevo recurso creado se puede recuperar
+                // en este caso devolvemos la referencia al recurso creado en Cloudinary
+                // el primer parametro es el nombre de un método de nuestro propio controlador
+                // es decir es el "route name" con el que el nuevo recurso creado se puede recuperar
                 // esto nos obliga a incluir en este mismo controlador un metodo GetPhoto que se pueda 
                 // invocar con una ruta GetPhoto
                 // el segundo parametro es un objeto con TODOS los parametros que necesitamos en la ruta 

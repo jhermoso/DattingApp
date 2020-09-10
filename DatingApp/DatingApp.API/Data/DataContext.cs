@@ -18,14 +18,17 @@ namespace DatingApp.API.Data
         public DbSet<Photo> Photos {get; set;}
         public DbSet<Like> Likes {get; set;}
 
-                protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<Message> Messages {get; set;}
+
+        // mapping
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             // this is necesary to set a self many 2 many relationship
             // becouse ef convention is not able to solve by him self
             // esto es por que en las relaciones m2n la tabla intermedia tiene 2 ids que actuan juntos como primary key
             // las convenciones solo sirven para resolver tablas con un unico campo que actua como primary key.
             builder.Entity<Like>()
-                .HasKey(k => new { k.LikerId, k.LikeeId }); // aqui decimos que campos forman la priamry key (izda dcha)
+                .HasKey(k => new { k.LikerId, k.LikeeId }); // aqui decimos que campos forman la primary key (izda dcha) 
 
             builder.Entity<Like>() // luego definimos que id va con que objeto (en este caso izda)
                .HasOne(u => u.Liker) // un liker 
@@ -39,7 +42,8 @@ namespace DatingApp.API.Data
                .HasForeignKey(u => u.LikeeId)
                .OnDelete(DeleteBehavior.Restrict);
 
-/*             builder.Entity<Message>()
+            // aqui vemos que no es necesario establecer cual es la primary key pues por convenio (convention) usa el campo id.
+            builder.Entity<Message>() 
               .HasOne(u => u.Sender)
               .WithMany(m => m.MessagesSent)
               .OnDelete(DeleteBehavior.Restrict);
@@ -47,7 +51,7 @@ namespace DatingApp.API.Data
             builder.Entity<Message>()
               .HasOne(u => u.Recipient)
               .WithMany(m => m.MessagesReceived)
-              .OnDelete(DeleteBehavior.Restrict); */
+              .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

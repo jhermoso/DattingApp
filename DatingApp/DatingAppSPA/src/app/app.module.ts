@@ -24,6 +24,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
+import { MemberMessagesComponent, } from './members/member-messages/member-messages.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 // import { AlertifyService} from './_services/alertify.service'
@@ -36,6 +37,8 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimeagoModule } from 'ngx-timeago';
 import { ListsResolver } from './_resolvers/lists.resolver';
+import { MessagesResolver } from './_resolvers/messages.resolver';
+
 
 // copied from https://github.com/auth0/angular2-jwt usage injection
 export function tokenGetter(): string | null {
@@ -55,7 +58,8 @@ export function tokenGetter(): string | null {
     MemberCardComponent,
     MemberDetailComponent,
     MemberEditComponent,
-    PhotoEditorComponent
+    PhotoEditorComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +93,8 @@ export function tokenGetter(): string | null {
     MemberEditResolver,
     PreventUnsavedChanges,
     AuthGuard,
-    ListsResolver
+    ListsResolver,
+    MessagesResolver
   ],
   bootstrap: [AppComponent]
 })
